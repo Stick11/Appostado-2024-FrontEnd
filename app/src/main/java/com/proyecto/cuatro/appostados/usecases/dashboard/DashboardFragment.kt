@@ -1,4 +1,4 @@
-package com.proyecto.cuatro.appostados.ui.dashboard
+package com.proyecto.cuatro.appostados.usecases.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
