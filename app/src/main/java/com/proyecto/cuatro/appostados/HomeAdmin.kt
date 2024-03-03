@@ -21,10 +21,6 @@ class HomeAdmin : AppCompatActivity() {
     }
 
     fun logOut(view: View) {
-        sharedPreferences = getSharedPreferences("my_app_prefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("is_logged_in", false)
-        editor.apply()
         startActivity(Intent(this, LoginActivity::class.java))
         loginService.logout()
     }

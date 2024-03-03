@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        startActivity(Intent(this, LoginActivity::class.java))
+
 
         val masterService = MasterService()
         loginService = LoginService(masterService)
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 when (user.rolUser) {
                     1 ->  startActivity(Intent(this, HomeAdmin::class.java))
                     //2 ->  startActivity(Intent(this, HomeAdmin::class.java))
-                    else ->  startActivity(Intent(this, LoginActivity::class.java))
+                    else ->  startActivity(Intent(this, LoginActivity::class.java))// por si es uno que no sea 1 o 2 que no debería existir
                 }
             }
 

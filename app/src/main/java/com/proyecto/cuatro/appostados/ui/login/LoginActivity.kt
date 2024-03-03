@@ -16,7 +16,6 @@ import android.widget.Toast
 import com.proyecto.cuatro.appostados.databinding.ActivityLoginBinding
 import com.proyecto.cuatro.appostados.MainActivity
 import android.content.Intent
-import android.content.SharedPreferences
 import com.proyecto.cuatro.appostados.R
 
 class LoginActivity : AppCompatActivity() {
@@ -61,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 if (loginResult.success != null) {
                     updateUiWithUser(loginResult.success)
-                    navigateToMainActivity() // SI FUE EXITOSO EL LOGIN REDIRECCIONAMOS AL HOME Y SETEAMOS EL USUARIO EN EL LOCAL STORAGE
+                    navigateToMainActivity() // SI FUE EXITOSO EL LOGIN REDIRECCIONAMOS AL HOME
                 }
                 setResult(Activity.RESULT_OK)
             }
