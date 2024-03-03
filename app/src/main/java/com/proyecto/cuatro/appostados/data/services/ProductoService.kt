@@ -1,6 +1,6 @@
-package com.proyecto.cuatro.appostados.provider.services
+package com.proyecto.cuatro.appostados.data.services
 
-import com.proyecto.cuatro.appostados.model.Product
+import com.proyecto.cuatro.appostados.data.model.Product
 import org.json.JSONObject
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -9,7 +9,7 @@ class ProductService : MasterService() {
 
     fun getProductById(productId: Int): Product? {
         val endpoint = "/product/$productId"
-        val response = httpRequest(endpoint)
+        val response = httpGetRequest(endpoint)
         if (response != null && response.isSuccessful) {
             val responseBody = response.body?.string()
             val productJson = responseBody?.let { JSONObject(it) }
