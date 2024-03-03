@@ -6,5 +6,18 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="light_gray">#CCCCCC</color>
+    <color name="colorPrimary">#FF4081</color>
+    <color name="google_button_background">#4285F4</color>
+    <color name="gray">#808080</color>
+
+    <color name="blue_1">#092041</color>
+    <color name="blue_2">#234E79</color>
+    <color name="blue_3">#54B1BB</color>
+    <color name="blue_4">#82F4DD</color>
+    <color name="white">#FEFEF2</color>
+
+    <color name="button_color">#234E79</color>
+    <color name="holo_red_dark">#ffcc0000</color>
+
 </resources>
