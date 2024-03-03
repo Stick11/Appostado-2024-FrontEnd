@@ -23,9 +23,11 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
-
+    private lateinit var sharedPreferences: SharedPreferences // LOCAL STORAGE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreferences = getSharedPreferences("my_app_prefs", Context.MODE_PRIVATE) // LOCAL STORAGE
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
