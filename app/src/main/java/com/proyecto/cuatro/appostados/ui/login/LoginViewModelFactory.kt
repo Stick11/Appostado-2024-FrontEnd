@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.proyecto.cuatro.appostados.data.services.LoginService
+import com.proyecto.cuatro.appostados.data.services.LoginServiceSingleton
 import com.proyecto.cuatro.appostados.data.services.MasterService
 
 /**
@@ -18,9 +19,9 @@ class LoginViewModelFactory(private val applicationContext: Context) : ViewModel
 
             val masterService = MasterService()
 
-            val loginRepository = LoginService(masterService)
+            val loginService = LoginServiceSingleton.getInstance(masterService)
 
-            return LoginViewModel(applicationContext, loginRepository) as T
+            return LoginViewModel(applicationContext, loginService) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

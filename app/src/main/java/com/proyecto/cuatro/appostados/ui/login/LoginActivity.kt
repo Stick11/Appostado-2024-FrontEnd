@@ -16,15 +16,18 @@ import android.widget.Toast
 import com.proyecto.cuatro.appostados.databinding.ActivityLoginBinding
 import com.proyecto.cuatro.appostados.MainActivity
 import android.content.Intent
+import android.content.SharedPreferences
 import com.proyecto.cuatro.appostados.R
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
-
+    private lateinit var sharedPreferences: SharedPreferences // LOCAL STORAGE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreferences = getSharedPreferences("my_app_prefs", Context.MODE_PRIVATE) // LOCAL STORAGE
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -60,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 if (loginResult.success != null) {
                     updateUiWithUser(loginResult.success)
-                    navigateToMainActivity() // SI FUE EXITOSO EL LOGIN REDIRECCIONAMOS AL HOME
+                    navigateToMainActivity() // SI FUE EXITOSO EL LOGIN REDIRECCIONAMOS AL HOME Y SETEAMOS EL USUARIO EN EL LOCAL STORAGE
                 }
                 setResult(Activity.RESULT_OK)
             }

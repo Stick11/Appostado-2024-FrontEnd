@@ -1,5 +1,6 @@
 package com.proyecto.cuatro.appostados.data.services
 
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.proyecto.cuatro.appostados.data.model.LoggedInUser
 import com.proyecto.cuatro.appostados.data.model.UserCredentials
@@ -20,6 +21,10 @@ class LoginService(private val masterService: MasterService) {
 
     fun logout() {
         user = null // LE QUITAMOS EL USUARIO AL SISTEMA
+    }
+
+    fun getUserSistema(): LoggedInUser? {
+        return user
     }
 
     fun login(username: String, password: String): Result<LoggedInUser> {
@@ -54,14 +59,13 @@ class LoginService(private val masterService: MasterService) {
         val loggedInUser = when (result) {
             is Result.Success -> {
                 val user = result.data
-                setLoggedInUser(user)
+                this.user = user
                 user
             }
             is Result.Error -> {
                 null
             }
         }
-        setLoggedInUser((loggedInUser)) // LE SETEAMOS EL USUARIO AL SISTEMA
         Result.Success(result)
         return result
 
