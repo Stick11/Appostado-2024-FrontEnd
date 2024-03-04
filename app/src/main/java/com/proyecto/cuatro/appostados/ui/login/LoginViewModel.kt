@@ -36,6 +36,7 @@ class LoginViewModel(private val applicationContext: Context, private val loginS
     fun logOut(){
         loginService.logout()
     }
+
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
