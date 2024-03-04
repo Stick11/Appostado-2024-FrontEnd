@@ -1,6 +1,5 @@
 package com.proyecto.cuatro.appostados.ui.login
 
-
 import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.Observer
@@ -123,8 +122,6 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
-
-
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {

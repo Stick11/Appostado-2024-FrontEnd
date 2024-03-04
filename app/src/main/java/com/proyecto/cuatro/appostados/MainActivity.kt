@@ -4,14 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.content.Context
 import com.proyecto.cuatro.appostados.HomeAdmin
-import com.proyecto.cuatro.appostados.databinding.ActivityMainBinding
-import com.proyecto.cuatro.appostados.ui.login.LoginActivity
-// Import other activities as needed, for example:
-// import com.proyecto.cuatro.appostados.ui.home.HomeAdmin
-
-// Your data services and models
 import com.proyecto.cuatro.appostados.data.services.LoginServiceSingleton
 import com.proyecto.cuatro.appostados.data.services.MasterService
+import com.proyecto.cuatro.appostados.databinding.ActivityMainBinding
+import com.proyecto.cuatro.appostados.ui.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 

@@ -64,9 +64,10 @@ class LoginService(private val masterService: MasterService, private val sharedP
         } else {
             return Result.Error(Exception("Failed to authenticate user"))
         }
+
         */
 
-        // Mock login for demonstration
+
         val result = masterService.login(username, password)
         when (result) {
             is Result.Success -> {
@@ -85,4 +86,5 @@ class LoginService(private val masterService: MasterService, private val sharedP
         // Save the user to SharedPreferences
         sharedPreferences.edit().putString("loggedInUser", Gson().toJson(loggedInUser)).apply()
     }
+
 }
