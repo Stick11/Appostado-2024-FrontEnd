@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "103302828718",
+    "project_id": "appostado-dev",
+    "storage_bucket": "appostado-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103302828718:android:b2813e0574e845f138d33f",
+        "android_client_info": {
+          "package_name": "com.proyecto.cuatro.appostados"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "103302828718-mcreh8ds886ui2jkh5q99ef4c31u98ov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.proyecto.cuatro.appostados",
+            "certificate_hash": "de3c0828ff09413f4b4b658675f06843c6ec18a4"
+          }
+        },
+        {
+          "client_id": "103302828718-lijqhcuqbip2grtjst11mu548lrtsocm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB5CaFD1_k3mVz1XH0_-_7SCn2S3P35xM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103302828718-lijqhcuqbip2grtjst11mu548lrtsocm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

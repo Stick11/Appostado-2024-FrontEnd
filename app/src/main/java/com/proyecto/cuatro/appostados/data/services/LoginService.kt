@@ -6,21 +6,37 @@ import com.proyecto.cuatro.appostados.data.model.LoggedInUser
 import com.proyecto.cuatro.appostados.data.model.UserCredentials
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 
-class LoginService(private val masterService: MasterService) {
+class LoginService(private val masterService: MasterService, private val sharedPreferences: SharedPreferences) {
 
-    var user: LoggedInUser? = null
+    private var _user: LoggedInUser? = null
+        get() {
+            if (field == null) {
+                // Attempt to load the user from SharedPreferences
+                val userJson = sharedPreferences.getString("loggedInUser", null)
+                if (userJson != null) {
+                    return Gson().fromJson(userJson, LoggedInUser::class.java)
+                }
+            }
+            return field
+        }
         private set
 
     val isLoggedIn: Boolean
         get() = user != null
 
+    val user: LoggedInUser?
+        get() = _user
+
     init {
-        user = null
+        // Attempt to load the user on initialization
+        _user = null
     }
 
     fun logout() {
-        user = null // LE QUITAMOS EL USUARIO AL SISTEMA
+        _user = null
+        sharedPreferences.edit().remove("loggedInUser").apply()
     }
 
     fun getUserSistema(): LoggedInUser? {
@@ -33,9 +49,8 @@ class LoginService(private val masterService: MasterService) {
             .toRequestBody("application/json".toMediaTypeOrNull())
 
         /*
-
         val response = masterService.httpPostRequest("api/login", requestBody)
-        return if (response != null && response.isSuccessful) {
+        if (response != null && response.isSuccessful) {
             val responseBody = response.body?.string()
             val loggedInUserJson = JSONObject(responseBody)
 
@@ -44,35 +59,30 @@ class LoginService(private val masterService: MasterService) {
             val rolUSer = loggedInUserJson.optInt("rolUser")
 
             val loggedInUser = LoggedInUser(userId.toString(), displayName, rolUSer)
-            setLoggedInUser((loggedInUser)) // LE SETEAMOS EL USUARIO AL SISTEMA
-            Result.Success(loggedInUser)
-
-
+            setLoggedInUser(loggedInUser)
+            return Result.Success(loggedInUser)
         } else {
-            Result.Error(Exception("Failed to authenticate user"))
+            return Result.Error(Exception("Failed to authenticate user"))
         }
-
         */
 
-
+        // Mock login for demonstration
         val result = masterService.login(username, password)
-        val loggedInUser = when (result) {
+        when (result) {
             is Result.Success -> {
                 val user = result.data
-                this.user = user
-                user
+                setLoggedInUser(user)
+                return Result.Success(user)
             }
             is Result.Error -> {
-                null
+                return result
             }
         }
-        Result.Success(result)
-        return result
-
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser?) {
-        this.user = loggedInUser
+        this._user = loggedInUser
+        // Save the user to SharedPreferences
+        sharedPreferences.edit().putString("loggedInUser", Gson().toJson(loggedInUser)).apply()
     }
-
 }

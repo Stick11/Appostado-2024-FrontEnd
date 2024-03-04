@@ -1,5 +1,6 @@
 package com.proyecto.cuatro.appostados.ui.login
 
+
 import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.Observer
@@ -14,9 +15,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import com.proyecto.cuatro.appostados.databinding.ActivityLoginBinding
-import com.proyecto.cuatro.appostados.MainActivity
 import android.content.Intent
 import android.content.SharedPreferences
+import com.proyecto.cuatro.appostados.MainActivity
 import com.proyecto.cuatro.appostados.R
 
 class LoginActivity : AppCompatActivity() {
@@ -122,6 +123,8 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
+
+
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {

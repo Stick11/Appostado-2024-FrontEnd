@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-
+    id("com.google.gms.google-services") // Apply the Google Services plugin
 }
 
 android {
@@ -58,4 +58,7 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.10")
 
 
+
+
 }
+
