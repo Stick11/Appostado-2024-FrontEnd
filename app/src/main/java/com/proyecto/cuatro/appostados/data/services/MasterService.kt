@@ -1,82 +1,137 @@
 package com.proyecto.cuatro.appostados.data.services
 
 import com.proyecto.cuatro.appostados.data.model.LoggedInUser
+import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.RequestBody
 import java.io.IOException
 import java.util.UUID
+import java.util.concurrent.TimeUnit
+import okhttp3.Callback
 
 open class MasterService {
     protected val client = OkHttpClient()
-    protected val baseUrl = ""
+    protected val baseUrl = "https://appostado-jd-version.azurewebsites.net"
 
-    fun httpGetRequest(endpoint: String): Response? {
+    fun httpGetRequestAsync(endpoint: String, callback: (Response?) -> Unit) {
         val request = Request.Builder()
             .url(baseUrl + endpoint)
+            .header("Authorization", "Bearer")
             .build()
 
-        return try {
-            client.newCall(request).execute()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    fun httpGetBodyRequest(endpoint: String, requestBody: RequestBody): Response? {
-        val request = Request.Builder()
-            .url(baseUrl + endpoint)
-            .post(requestBody)
+        val client = OkHttpClient.Builder()
+            .connectTimeout(2, TimeUnit.SECONDS)
+            .readTimeout(2, TimeUnit.SECONDS)
             .build()
 
-        return try {
-            client.newCall(request).execute()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                callback(response)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                callback(null)
+            }
+        })
     }
 
-    fun httpPostRequest(endpoint: String, requestBody: RequestBody): Response? {
+    fun httpGetBodyRequestAsync(endpoint: String, requestBody: RequestBody, callback: (Response?) -> Unit) {
         val request = Request.Builder()
             .url(baseUrl + endpoint)
             .post(requestBody)
+            .header("Authorization", "Bearer")
             .build()
 
-        return try {
-            client.newCall(request).execute()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
+        val client = OkHttpClient.Builder()
+            .connectTimeout(2, TimeUnit.SECONDS)
+            .readTimeout(2, TimeUnit.SECONDS)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                callback(response)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                callback(null)
+            }
+        })
     }
-    fun httpPutRequest(endpoint: String, requestBody: RequestBody): Response? {
+
+    fun httpPostRequestAsync(endpoint: String, requestBody: RequestBody, callback: (Response?) -> Unit) {
+        val request = Request.Builder()
+            .url(baseUrl + endpoint)
+            .post(requestBody)
+            .header("Authorization", "Bearer")
+            .build()
+
+        val client = OkHttpClient.Builder()
+            .connectTimeout(2, TimeUnit.SECONDS)
+            .readTimeout(2, TimeUnit.SECONDS)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                callback(response)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                callback(null)
+            }
+        })
+    }
+
+    fun httpPutRequestAsync(endpoint: String, requestBody: RequestBody, callback: (Response?) -> Unit) {
         val request = Request.Builder()
             .url(baseUrl + endpoint)
             .put(requestBody)
+            .header("Authorization", "Bearer")
             .build()
 
-        return try {
-            client.newCall(request).execute()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
+        val client = OkHttpClient.Builder()
+            .connectTimeout(2, TimeUnit.SECONDS)
+            .readTimeout(2, TimeUnit.SECONDS)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                callback(response)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                callback(null)
+            }
+        })
     }
-    fun httpDeleteRequest(endpoint: String): Response? {
+
+    fun httpDeleteRequestAsync(endpoint: String, callback: (Response?) -> Unit) {
         val request = Request.Builder()
             .url(baseUrl + endpoint)
             .delete()
+            .header("Authorization", "Bearer")
             .build()
 
-        return try {
-            client.newCall(request).execute()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
+        val client = OkHttpClient.Builder()
+            .connectTimeout(2, TimeUnit.SECONDS)
+            .readTimeout(2, TimeUnit.SECONDS)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                callback(response)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                callback(null)
+            }
+        })
     }
 
     fun login(username: String, password: String): Result<LoggedInUser> {
