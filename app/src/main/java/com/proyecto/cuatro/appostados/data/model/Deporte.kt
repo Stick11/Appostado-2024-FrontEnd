@@ -1,5 +1,7 @@
 package com.proyecto.cuatro.appostados.data.model
-data class Product(
+
+data class Deporte(
     val id: Int,
-    val name: String
+    val name: String,
+    val age: Int?
 )

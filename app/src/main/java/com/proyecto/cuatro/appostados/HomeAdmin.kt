@@ -35,4 +35,8 @@ class HomeAdmin : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    fun irDeportes(view: View){
+        startActivity(Intent(this, DeportesAdminActivity::class.java))
+    }
 }
