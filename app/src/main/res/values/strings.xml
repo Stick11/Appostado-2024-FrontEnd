@@ -14,4 +14,14 @@
     <string name="title_activity_login">Appostados</string>
     <string name="title_activity_home_user">HomeUser</string>
 
+    <string name="register_title">Registro</string>
+    <string name="name">Nombre</string>
+    <string name="last_name_1">Primer Apellido</string>
+    <string name="last_name_2">Segundo Apellido</string>
+    <string name="birthdate">Fecha de Nacimiento</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="register">Registrar</string>
+    <string name="profile_picture">Foto de Perfil</string>
+
 </resources>

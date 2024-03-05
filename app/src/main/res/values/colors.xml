@@ -2,7 +2,7 @@
 <resources>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
+    <color name="purple_700">#092041</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
@@ -15,7 +15,8 @@
     <color name="blue_2">#234E79</color>
     <color name="blue_3">#54B1BB</color>
     <color name="blue_4">#82F4DD</color>
-    <color name="white">#FEFEF2</color>
+    <color name="bone">#FEFEF2</color>
+    <color name="white">#FFF</color>
 
     <color name="button_color">#234E79</color>
     <color name="holo_red_dark">#ffcc0000</color>

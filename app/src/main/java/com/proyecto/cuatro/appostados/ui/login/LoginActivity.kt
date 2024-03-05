@@ -18,6 +18,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import com.proyecto.cuatro.appostados.MainActivity
 import com.proyecto.cuatro.appostados.R
+import com.proyecto.cuatro.appostados.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -99,6 +100,12 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
+        }
+
+        //configurar un listener para el botón de registro
+        binding.createAccountText?.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 

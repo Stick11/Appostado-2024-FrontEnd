@@ -24,7 +24,7 @@ class HomeAdmin : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("my_app_prefs", Context.MODE_PRIVATE)
 
         // Obtener la instancia de LoginService a través del singleton
-        val masterService = MasterService() // Asegúrate de que esto se inicializa según tus necesidades
+        val masterService = MasterService() // Instancia de MasterService
         loginService = LoginServiceSingleton.getInstance(masterService, sharedPreferences)
     }
 
