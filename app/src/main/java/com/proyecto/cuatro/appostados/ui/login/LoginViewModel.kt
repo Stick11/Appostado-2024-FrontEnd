@@ -8,7 +8,7 @@ import com.proyecto.cuatro.appostados.data.services.LoginService
 import com.proyecto.cuatro.appostados.data.services.Result
 import com.proyecto.cuatro.appostados.R
 import android.content.Context
-import android.content.SharedPreferences
+
 
 class LoginViewModel(private val applicationContext: Context, private val loginService: LoginService) : ViewModel() {
 
@@ -26,25 +26,30 @@ class LoginViewModel(private val applicationContext: Context, private val loginS
             _loginResult.value =
                 LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
         } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
-
-            _loginForm.value = LoginFormState(
-                usernameError = R.string.invalid_username
-            )
+            _loginResult.value = LoginResult(error = LoginActivity.LoginErrorType.INVALID_CREDENTIALS)
         }
     }
+
     fun logOut(){
         loginService.logout()
     }
 
     fun loginDataChanged(username: String, password: String) {
+        var usernameError: Int? = null
+        var passwordError: Int? = null
+
         if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
-        } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+            usernameError = R.string.error_invalid_username
         }
+        if (!isPasswordValid(password)) {
+            passwordError = R.string.error_invalid_password
+        }
+
+        _loginForm.value = LoginFormState(
+            isDataValid = usernameError == null && passwordError == null,
+            usernameError = usernameError,
+            passwordError = passwordError
+        )
     }
 
     // A placeholder username validation check

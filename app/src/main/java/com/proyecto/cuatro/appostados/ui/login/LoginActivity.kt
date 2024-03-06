@@ -33,8 +33,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = binding.username
-        val password = binding.password
+        val username = binding.usernameEditText
+        val password = binding.passwordEditText
         val login = binding.login
         val loading = binding.loading
 
@@ -48,10 +48,14 @@ class LoginActivity : AppCompatActivity() {
             login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+                if (username != null) {
+                    username.error = getString(loginState.usernameError)
+                }
             }
             if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+                if (password != null) {
+                    password.error = getString(loginState.passwordError)
+                }
             }
         })
 
@@ -70,17 +74,17 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        username.afterTextChanged {
+        username?.afterTextChanged {
             loginViewModel.loginDataChanged(
                 username.text.toString(),
-                password.text.toString()
+                password?.text.toString()
             )
         }
 
-        password.apply {
+        password?.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
-                    username.text.toString(),
+                    username?.text.toString(),
                     password.text.toString()
                 )
             }
@@ -88,17 +92,21 @@ class LoginActivity : AppCompatActivity() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
-                            username.text.toString(),
-                            password.text.toString()
-                        )
+                        if (username != null) {
+                            loginViewModel.login(
+                                username.text.toString(),
+                                password.text.toString()
+                            )
+                        }
                 }
                 false
             }
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                if (username != null) {
+                    loginViewModel.login(username.text.toString(), password.text.toString())
+                }
             }
         }
 
@@ -120,8 +128,20 @@ class LoginActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    private fun showLoginFailed(errorType: LoginErrorType) {
+        val errorMessage = when (errorType) {
+            LoginErrorType.INVALID_USERNAME -> R.string.error_invalid_username
+            LoginErrorType.INVALID_PASSWORD -> R.string.error_invalid_password
+            LoginErrorType.INVALID_CREDENTIALS -> R.string.error_invalid_credentials
+        }
+        Toast.makeText(applicationContext, getString(errorMessage), Toast.LENGTH_SHORT).show()
+
+    }
+
+    enum class LoginErrorType {
+        INVALID_USERNAME,
+        INVALID_PASSWORD,
+        INVALID_CREDENTIALS
     }
 
     private fun navigateToMainActivity() {
@@ -129,6 +149,7 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
+
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {
