@@ -15,7 +15,7 @@ import okhttp3.Response
 class DeporteService : MasterService() {
 
     fun getDeporteById(productId: Int, callback: (Deporte?) -> Unit) {
-        val endpoint = "/product/$productId"
+        val endpoint = "/sport/$productId"
         val request = Request.Builder()
             .url(baseUrl + endpoint)
             .build()
@@ -31,11 +31,10 @@ class DeporteService : MasterService() {
                 if (response.isSuccessful) {
                     val responseBody = response.body?.string()
                     val productJson = responseBody?.let { JSONObject(it) }
-                    val id = productJson?.optInt("id")
+                    val id = productJson?.optString("id")
                     val name = productJson?.optString("name")
-                    val age = productJson?.optInt("age")
                     val deporte = if (id != null && name != null) {
-                        Deporte(id, name, age)
+                        Deporte(id, name)
                     } else {
                         null
                     }
@@ -51,15 +50,14 @@ class DeporteService : MasterService() {
     fun createDeporte(name: String, callback: (Deporte?) -> Unit) {
         val requestBody = "{\"name\": \"$name\"}".toRequestBody("application/json".toMediaTypeOrNull())
 
-        httpPostRequestAsync("/products", requestBody) { response ->
+        httpPostRequestAsync("/sport", requestBody) { response ->
             if (response != null && response.isSuccessful) {
                 val responseBody = response.body?.string()
                 val productJson = responseBody?.let { JSONObject(it) }
-                val id = productJson?.optInt("id")
+                val id = productJson?.optString("id")
                 val productName = productJson?.optString("name")
-                val age = productJson?.optInt("age")
                 if (id != null && productName != null) {
-                    callback(Deporte(id, productName, age))
+                    callback(Deporte(id, productName))
                 } else {
                     callback(null)
                 }
@@ -71,7 +69,7 @@ class DeporteService : MasterService() {
 
 
     fun getAllDeporte(callback: (List<Deporte>?) -> Unit) {
-        val endpoint = "/api/v1/dog"
+        val endpoint = "/api/v1/sport"
 
         httpGetRequestAsync(endpoint) { response ->
             val deportesList = mutableListOf<Deporte>()
@@ -82,10 +80,9 @@ class DeporteService : MasterService() {
 
                 for (i in 0 until jsonArray.length()) {
                     val jsonObject = jsonArray.getJSONObject(i)
-                    val id = jsonObject.optInt("id")
+                    val id = jsonObject.optString("id")
                     val nombre = jsonObject.optString("name")
-                    val edad = jsonObject.optInt("age")
-                    val deporte = Deporte(id, nombre, edad)
+                    val deporte = Deporte(id, nombre)
                     deportesList.add(deporte)
                 }
             }
@@ -101,11 +98,10 @@ class DeporteService : MasterService() {
             if (response != null && response.isSuccessful) {
                 val responseBody = response.body?.string()
                 val productJson = responseBody?.let { JSONObject(it) }
-                val id = productJson?.optInt("id")
+                val id = productJson?.optString("id")
                 val productName = productJson?.optString("name")
-                val age = productJson?.optInt("age")
                 if (id != null && productName != null) {
-                    callback(Deporte(id, productName, age))
+                    callback(Deporte(id, productName))
                 } else {
                     callback(null)
                 }

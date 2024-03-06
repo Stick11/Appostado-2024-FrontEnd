@@ -18,4 +18,6 @@
     <string name="id">ID</string>
     <string name="age">Age</string>
 
+    <string name="edit_button_description">Editar</string>
+    <string name="delete_button_description">Eliminar</string>
 </resources>
