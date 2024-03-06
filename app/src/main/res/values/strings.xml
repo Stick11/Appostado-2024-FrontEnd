@@ -32,5 +32,6 @@
     <string name="error_network_error">Error de red. Por favor, verifica tu conexión a Internet e intenta nuevamente.</string>
 
 
-
+    <string name="edit_button_description">Editar</string>
+    <string name="delete_button_description">Eliminar</string>
 </resources>

@@ -1,0 +1,12 @@
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Otros atributos de estilo de la aplicación -->
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!-- Fondo personalizado -->
+        <item name="android:queryBackground">@drawable/searchview_bg</item>
+        <!-- Color del texto del cuadro de búsqueda -->
+        <item name="android:textColorHint">#888888</item>
+    </style>
+</resources>

@@ -19,38 +19,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Campo de entrada para el nombre del deporte -->
     <EditText
         android:id="@+id/editTextSportName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="342dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
         android:hint="Nombre del Deporte"
         android:inputType="text"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.231"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
-    <!-- Botón para agregar un nuevo deporte -->
     <Button
         android:id="@+id/buttonAddSport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Agregar Deporte"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSportName"
+        android:text="Agregar Deporte"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextSportName" />
 
-    <!-- Lista de deportes -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:queryHint="Buscar deportes"
+        style="@style/SearchViewStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddSport" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSports"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAddSport"
+        android:layout_width="408dp"
+        android:layout_height="453dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
