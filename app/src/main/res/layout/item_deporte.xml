@@ -1,33 +1,35 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:layout_margin="8dp"
+    android:background="@android:color/darker_gray">
 
-    <TextView
-        android:id="@+id/textViewId"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/id"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="332dp"
+        android:layout_height="32dp"
         android:layout_weight="1"
         android:text="@string/name"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/textViewAge"
-        android:layout_width="0dp"
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/age"
-        android:textSize="16sp"/>
+        android:src="@drawable/ic_edit"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/edit_button_description"/>
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/delete_button_description"/>
 
 </LinearLayout>
+
