@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
 
         if (loginService.isLoggedIn) {
             val user = loginService.getUserSistema()
-            when (user?.rolUser) {
-                1 -> startActivity(Intent(this, HomeAdmin::class.java))
+            when (user?.name) {
+                "Kevin" -> startActivity(Intent(this, HomeAdmin::class.java))
                 else -> startActivity(Intent(this, LoginActivity::class.java))
             }
         } else {

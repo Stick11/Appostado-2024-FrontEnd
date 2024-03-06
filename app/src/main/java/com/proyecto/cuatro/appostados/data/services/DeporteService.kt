@@ -51,23 +51,27 @@ class DeporteService : MasterService() {
     fun createDeporte(name: String, callback: (Deporte?) -> Unit) {
         val requestBody = "{\"name\": \"$name\"}".toRequestBody("application/json".toMediaTypeOrNull())
 
-        httpPostRequestAsync("/products", requestBody) { response ->
-            if (response != null && response.isSuccessful) {
-                val responseBody = response.body?.string()
-                val productJson = responseBody?.let { JSONObject(it) }
-                val id = productJson?.optInt("id")
-                val productName = productJson?.optString("name")
-                val age = productJson?.optInt("age")
-                if (id != null && productName != null) {
-                    callback(Deporte(id, productName, age))
-                } else {
+        httpPostRequestAsync("/products", requestBody) { result ->
+            when (result) {
+                is HttpResult.Success -> {
+                    val responseBody = result.response.body?.string()
+                    val productJson = responseBody?.let { JSONObject(it) }
+                    val id = productJson?.optInt("id")
+                    val productName = productJson?.optString("name")
+                    val age = productJson?.optInt("age")
+                    if (id != null && productName != null) {
+                        callback(Deporte(id, productName, age))
+                    } else {
+                        callback(null)
+                    }
+                }
+                is HttpResult.Error -> {
                     callback(null)
                 }
-            } else {
-                callback(null)
             }
         }
     }
+
 
 
     fun getAllDeporte(callback: (List<Deporte>?) -> Unit) {

@@ -133,6 +133,7 @@ class LoginActivity : AppCompatActivity() {
             LoginErrorType.INVALID_USERNAME -> R.string.error_invalid_username
             LoginErrorType.INVALID_PASSWORD -> R.string.error_invalid_password
             LoginErrorType.INVALID_CREDENTIALS -> R.string.error_invalid_credentials
+            LoginErrorType.NETWORK_ERROR ->  R.string.error_network_error
         }
         Toast.makeText(applicationContext, getString(errorMessage), Toast.LENGTH_SHORT).show()
 
@@ -141,7 +142,8 @@ class LoginActivity : AppCompatActivity() {
     enum class LoginErrorType {
         INVALID_USERNAME,
         INVALID_PASSWORD,
-        INVALID_CREDENTIALS
+        INVALID_CREDENTIALS,
+        NETWORK_ERROR
     }
 
     private fun navigateToMainActivity() {

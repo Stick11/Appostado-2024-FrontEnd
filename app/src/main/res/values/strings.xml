@@ -10,7 +10,7 @@
     <string name="welcome">¡Bienvenido!</string>
     <string name="error_invalid_username">Nombre de usuario inválido.</string>
     <string name="error_invalid_password">Contraseña inválida.</string>
-    <string name="error_invalid_credentials">Credenciales inválidas. Por favor, inténtalo de nuevo.</string>
+    <string name="error_invalid_credentials">Error en el login</string>
 
     <string name="login_failed">Inicio de sesión fallido</string>
     <string name="title_activity_login">Appostados</string>
@@ -26,7 +26,11 @@
     <string name="birthdate">Fecha de nacimiento</string>
     <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirme su contraseña </string>
     <string name="register">Registrar</string>
     <string name="profile_picture">Foto de perfil(opcional)</string>
+    <string name="error_network_error">Error de red. Por favor, verifica tu conexión a Internet e intenta nuevamente.</string>
+
+
 
 </resources>

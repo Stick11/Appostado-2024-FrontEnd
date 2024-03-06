@@ -43,43 +43,31 @@ class LoginService(private val masterService: MasterService, private val sharedP
         return user
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
-        val credentials = UserCredentials(username, password)
+    fun login(email: String, password: String, callback: (Result<LoggedInUser>) -> Unit) {
+        val credentials = UserCredentials(email, password)
         val requestBody = Gson().toJson(credentials)
             .toRequestBody("application/json".toMediaTypeOrNull())
 
-        /*
-        val response = masterService.httpPostRequest("api/login", requestBody)
-        if (response != null && response.isSuccessful) {
-            val responseBody = response.body?.string()
-            val loggedInUserJson = JSONObject(responseBody)
-
-            val userId = loggedInUserJson.optInt("userId")
-            val displayName = loggedInUserJson.optString("displayName")
-            val rolUSer = loggedInUserJson.optInt("rolUser")
-
-            val loggedInUser = LoggedInUser(userId.toString(), displayName, rolUSer)
-            setLoggedInUser(loggedInUser)
-            return Result.Success(loggedInUser)
-        } else {
-            return Result.Error(Exception("Failed to authenticate user"))
-        }
-
-        */
-
-
-        val result = masterService.login(username, password)
-        when (result) {
-            is Result.Success -> {
-                val user = result.data
-                setLoggedInUser(user)
-                return Result.Success(user)
-            }
-            is Result.Error -> {
-                return result
+        masterService.httpPostRequestAsync("api/v1/auth/sign-in", requestBody) { result ->
+            when (result) {
+                is MasterService.HttpResult.Success -> {
+                    val responseBody = result.response.body?.string()
+                    val signInResponseJson = JSONObject(responseBody)
+                    val token = signInResponseJson.getString("token")
+                    val id = signInResponseJson.getJSONObject("user").getString("id")
+                    val name = signInResponseJson.getJSONObject("user").getString("name")
+                    val signInResponse = LoggedInUser(token, id, name)
+                    callback(Result.Success(signInResponse))
+                }
+                is MasterService.HttpResult.Error -> {
+                    callback(Result.Error(Exception("Failed to authenticate user")))
+                }
             }
         }
     }
+
+
+
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser?) {
         this._user = loggedInUser

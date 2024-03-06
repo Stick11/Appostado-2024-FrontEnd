@@ -14,7 +14,10 @@ import okhttp3.Callback
 open class MasterService {
     protected val client = OkHttpClient()
     protected val baseUrl = "https://appostado-jd-version.azurewebsites.net"
-
+    sealed class HttpResult {
+        data class Success(val response: Response) : HttpResult()
+        data class Error(val exception: Exception) : HttpResult()
+    }
     fun httpGetRequestAsync(endpoint: String, callback: (Response?) -> Unit) {
         val request = Request.Builder()
             .url(baseUrl + endpoint)
@@ -62,7 +65,7 @@ open class MasterService {
         })
     }
 
-    fun httpPostRequestAsync(endpoint: String, requestBody: RequestBody, callback: (Response?) -> Unit) {
+    fun httpPostRequestAsync(endpoint: String, requestBody: RequestBody, callback: (HttpResult) -> Unit) {
         val request = Request.Builder()
             .url(baseUrl + endpoint)
             .post(requestBody)
@@ -76,12 +79,12 @@ open class MasterService {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
-                callback(response)
+                callback(HttpResult.Success(response))
             }
 
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
-                callback(null)
+                callback(HttpResult.Error(e))
             }
         })
     }
@@ -133,7 +136,7 @@ open class MasterService {
             }
         })
     }
-
+/*
     fun login(username: String, password: String): Result<LoggedInUser> {
         return try {
             if (username == "Kevin" && password == "12345678") {
@@ -148,5 +151,5 @@ open class MasterService {
         } catch (e: Throwable) {
             Result.Error(IOException("Error durante el inicio de sesión", e))
         }
-    }
+    }*/
 }

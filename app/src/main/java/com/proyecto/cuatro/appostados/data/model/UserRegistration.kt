@@ -5,7 +5,7 @@ import java.util.Date
 data class UserRegistration(
     val name: String,
     val lastNames: String,
-    val birthDate: Date,
+    val birthDate: Long,
     val foto : String,
     val email: String,
     val password: String

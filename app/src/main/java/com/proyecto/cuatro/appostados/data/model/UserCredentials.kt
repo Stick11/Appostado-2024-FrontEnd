@@ -1,5 +1,5 @@
 package com.proyecto.cuatro.appostados.data.model
 
 data class UserCredentials(
-    val username: String,
+    val email: String,
     val password: String)

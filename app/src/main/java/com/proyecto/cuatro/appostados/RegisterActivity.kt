@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +17,7 @@ import com.google.android.gms.common.api.ApiException
 import com.proyecto.cuatro.appostados.data.model.UserRegistration
 import com.proyecto.cuatro.appostados.data.services.UserRegisterService
 import com.proyecto.cuatro.appostados.databinding.ActivityRegisterBinding
+import com.proyecto.cuatro.appostados.ui.login.LoginActivity
 import com.proyecto.cuatro.appostados.ui.registro.UserRegistrationViewModel
 import com.proyecto.cuatro.appostados.ui.registro.UserRegistrationViewModelFactory
 import com.proyecto.cuatro.appostados.util.Validator
@@ -95,19 +98,52 @@ class RegisterActivity : AppCompatActivity() {
         // Establece el OnClickListener para el campo de fecha de nacimiento
         binding.birthdateEditText.setOnClickListener { showDatePickerDialog() }
         // Listener para el ImageView para abrir la galería
-                binding.profileImageView.setOnClickListener {
-                    pickImageLauncher.launch("image/*")
-                }
-        // Mover el OnClickListener del botón de registro aquí
+        binding.profileImageView.setOnClickListener {
+            pickImageLauncher.launch("image/*")
+        }
+        // Establecer OnClickListener para el botón de registro
         binding.registerButton.setOnClickListener { registerUser() }
+        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                validatePasswordConfirmation()
+            }
 
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        binding.confirmPasswordEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                validatePasswordConfirmation()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+
+
+        // Observar el estado del registro desde el ViewModel
         viewModel.registrationStatus.observe(this) { response ->
             if (response.success) {
                 // Manejar el registro exitoso
                 Toast.makeText(this, response.message, Toast.LENGTH_LONG).show()
             } else {
-                // Mostrar mensaje de error
+                // Mostrar mensaje de error al usuario
                 Toast.makeText(this, response.message, Toast.LENGTH_LONG).show()
+            }
+        }
+
+        // Observar la redirección al LoginActivity después de un registro exitoso
+        viewModel.redirectToLogin.observe(this) { redirectToLogin ->
+            if (redirectToLogin) {
+                // Si es necesario, aquí puedes agregar cualquier dato adicional que desees pasar a la LoginActivity
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                // Finalizar esta actividad para que el usuario no pueda regresar aquí presionando el botón de retroceso
+                finish()
             }
         }
     }
@@ -138,10 +174,20 @@ class RegisterActivity : AppCompatActivity() {
 
 
     private fun registerUser() {
+        // Obtener valores de los campos de contraseña y confirmación de contraseña
+        val passwordInput = binding.passwordEditText.text.toString()
+        val confirmPassword = binding.confirmPasswordEditText.text.toString()
+
+        // Verificar si las contraseñas coinciden
+        if (passwordInput != confirmPassword) {
+            // Mostrar mensaje de error si las contraseñas no coinciden
+            Toast.makeText(this, "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show()
+            return
+        }
         val name = binding.nameEditText.text.toString().trim()
         val lastName1 = binding.lastName1EditText.text.toString().trim()
         val email = binding.emailEditText.text.toString().trim()
-        val password = binding.passwordEditText.text.toString()
+        val password = passwordInput
         val birthDateString = binding.birthdateEditText.text.toString()
 
         // Validar que ningún campo esté vacío
@@ -167,28 +213,49 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Debes tener al menos 18 años para registrarte.", Toast.LENGTH_SHORT).show()
                 return
             }
+
+            // Obtener el timestamp de la fecha de nacimiento
+            val birthDateTimestamp = birthDate.time // Convertir la fecha de nacimiento a un timestamp en milisegundos
+
+            // Crear el objeto UserRegistration con todos los datos necesarios
+            val userRegistration = UserRegistration(
+                name = name,
+                lastNames = lastName1,
+                birthDate = birthDateTimestamp,
+                foto = imageUriString,
+                email = email,
+                password = password
+            )
+
+            // Llamar al método del ViewModel para registrar al usuario
+            viewModel.registerUser(userRegistration)
         } ?: run {
             Toast.makeText(this, "Formato de fecha de nacimiento inválido.", Toast.LENGTH_SHORT).show()
             return
         }
-
-        // Si todas las validaciones pasan, procede con el registro
-        val userRegistration = UserRegistration(
-            name = name,
-            lastNames = lastName1,
-            birthDate = birthDate!!,
-            foto = imageUriString,
-            email = email,
-            password = password
-        )
-
-        viewModel.registerUser(userRegistration)
     }
+
     // Inside the activity or fragment where you handle image selection
     private fun setImageHeight(newHeightPx: Int) {
         val layoutParams = binding.profileImageView.layoutParams
         layoutParams.height = newHeightPx
         binding.profileImageView.layoutParams = layoutParams
+    }
+    private fun showError(errorMessage: String) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+    }
+    // Función para validar la coincidencia de contraseñas
+    fun validatePasswordConfirmation() {
+        val password = binding.passwordEditText.text.toString()
+        val confirmPassword = binding.confirmPasswordEditText.text.toString()
+
+        if (password == confirmPassword) {
+            // Si las contraseñas coinciden, puedes cambiar el color del borde del EditText a su estado original
+            binding.confirmPasswordLayout.error = null
+        } else {
+            // Si las contraseñas no coinciden, puedes cambiar el color del borde del EditText a rojo y mostrar un mensaje de error
+            binding.confirmPasswordLayout.error = "Las contraseñas no coinciden"
+        }
     }
 
 }

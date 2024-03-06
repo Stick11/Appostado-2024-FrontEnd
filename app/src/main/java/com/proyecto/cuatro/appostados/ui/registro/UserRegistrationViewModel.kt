@@ -13,17 +13,20 @@ class UserRegistrationViewModel(private val userRegisterService: UserRegisterSer
     private val _registrationStatus = MutableLiveData<RegistrationResponse>()
     val registrationStatus: LiveData<RegistrationResponse> = _registrationStatus
 
-    fun registerUser(userRegistration: UserRegistration) {
-        if (!Validator.isValidEmail(userRegistration.email) ||
-            !Validator.isValidPassword(userRegistration.password) ||
-            !Validator.isAge18OrOver(userRegistration.birthDate)) {
-            _registrationStatus.value = RegistrationResponse(false, "Por favor digíte los datos correctamente")
-            return
-        }
+    // LiveData para manejar la redirección después de un registro exitoso
+    private val _redirectToLogin = MutableLiveData<Boolean>()
+    val redirectToLogin: LiveData<Boolean> = _redirectToLogin
 
-        // Llamar a userRegisterService para realizar el registro en el backend
+    fun registerUser(userRegistration: UserRegistration) {
         userRegisterService.registerUser(userRegistration) { success, message ->
-            _registrationStatus.value = RegistrationResponse(success, message)
+            if (success) {
+                _registrationStatus.value = RegistrationResponse(true, message)
+                // Si el registro es exitoso, lanzar el evento para redirigir al LoginActivity
+                _redirectToLogin.value = true
+            } else {
+                _registrationStatus.value = RegistrationResponse(false, message)
+            }
         }
     }
 }
+
