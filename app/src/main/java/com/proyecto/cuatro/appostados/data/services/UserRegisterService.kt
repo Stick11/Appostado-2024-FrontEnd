@@ -25,33 +25,38 @@ class UserRegisterService : MasterService() {
 
         val requestBody = requestBodyJson.toRequestBody("application/json".toMediaTypeOrNull())
         val endpoint="/api/v1/auth/sign-up"
-        masterService.httpPostRequestAsync(endpoint, requestBody) { result ->
-            when (result) {
-                is HttpResult.Success -> {
-                    val response = result.response
+        masterService.httpPostRequestAsync("/sport", requestBody) { response ->
+            if (response != null && response.isSuccessful) {
+                    val response = response
                     when (response.code) {
                         // Registro exitoso
                         200 -> postResult(true, "Registro exitoso", callback)
                         // Error de validación de datos
+                        // Error de validación de datos
                         400 -> {
-                            val errorMessage = parseErrorMessage(response.body?.string())
-                            postResult(false, errorMessage ?: "Error de validación", callback)
+                            val responseBody = response.body?.string() ?: "{}" // Default to empty JSON if null
+                            val jsonObject = JSONObject(responseBody)
+                            val errorCode = jsonObject.optString("errorCode", "")
+                            val errorMessage = when (errorCode) {
+                                "InvalidPasswordException" -> "La contraseña proporcionada es inválida."
+                                "UserNotFound" -> "El usuario no fue encontrado."
+                                // Add more cases as needed
+                                else -> jsonObject.optString("errorMessage", "Error de validación")
+                            }
+                            postResult(false, errorMessage, callback)
                         }
                         // Error interno del servidor
                         500 -> postResult(false, "Error interno del servidor", callback)
                         // Otro código de estado
                         else -> postResult(false, "Error desconocido: ${response.code}", callback)
                     }
+                } else {
+                    postResult(false, "Error de conexión", callback)
                 }
-                is HttpResult.Error -> {
-                    // No se pudo conectar al servidor
-                    postResult(false, "Error de conexión: No se pudo conectar al servidor", callback)
-                }
+
             }
         }
     }
-
-
 
     private fun postResult(success: Boolean, message: String, callback: (Boolean, String) -> Unit) {
         Handler(Looper.getMainLooper()).post {
@@ -67,5 +72,5 @@ class UserRegisterService : MasterService() {
             null
         }
     }
-}
+
 

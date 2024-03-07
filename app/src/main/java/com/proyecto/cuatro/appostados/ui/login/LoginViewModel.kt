@@ -8,12 +8,14 @@ import com.proyecto.cuatro.appostados.data.services.LoginService
 import com.proyecto.cuatro.appostados.data.services.Result
 import com.proyecto.cuatro.appostados.R
 import android.content.Context
+import com.proyecto.cuatro.appostados.data.repository.UserRepository
 import com.proyecto.cuatro.appostados.util.Validator
 import org.json.JSONObject
 import java.io.IOException
 
 
-class LoginViewModel(private val applicationContext: Context, private val loginService: LoginService) : ViewModel() {
+
+class LoginViewModel(private val userRepository: UserRepository, private val loginService: LoginService) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -28,16 +30,17 @@ class LoginViewModel(private val applicationContext: Context, private val loginS
                 is Result.Success -> {
                     val loggedInUser = result.data
                     val loggedInUserView = LoggedInUserView(displayName = loggedInUser.name)
+                    val token = loggedInUser.token
+                    userRepository.saveToken(token)
                     _loginResult.postValue(LoginResult(success = loggedInUserView))
                 }
                 is Result.Error -> {
-                    val errorType = when (val errorCode = parseErrorCode(result.exception.message)) {
-                        "InvalidPasswordException" -> LoginActivity.LoginErrorType.INVALID_PASSWORD
-                        "UserNotFound" -> LoginActivity.LoginErrorType.INVALID_USERNAME
-                        else -> {
-                            // Manejar cualquier otro tipo de error como un error genérico
-                            LoginActivity.LoginErrorType.INVALID_CREDENTIALS
-                        }
+                    val responseBody = result.exception.message ?: "{}"
+                    val errorType = when (responseBody) {
+                        "The provided password is invalid." -> LoginActivity.LoginErrorType.INVALID_PASSWORD
+                        "User not found" -> LoginActivity.LoginErrorType.INVALID_USERNAME
+                        // Add more cases as needed
+                        else -> LoginActivity.LoginErrorType.INVALID_CREDENTIALS
                     }
                     _loginResult.postValue(LoginResult(error = errorType))
                 }
@@ -59,6 +62,7 @@ class LoginViewModel(private val applicationContext: Context, private val loginS
 
 
     fun logOut(){
+        userRepository.clearUserData()
         loginService.logout()
     }
 

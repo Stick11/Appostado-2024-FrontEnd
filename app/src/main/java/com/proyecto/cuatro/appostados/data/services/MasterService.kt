@@ -133,7 +133,7 @@ open class MasterService {
             }
         })
     }
-
+/*
     fun login(username: String, password: String): Result<LoggedInUser> {
         return try {
             if (username == "Kevin" && password == "12345678") {
@@ -148,5 +148,5 @@ open class MasterService {
         } catch (e: Throwable) {
             Result.Error(IOException("Error durante el inicio de sesión", e))
         }
-    }
+    }*/
 }

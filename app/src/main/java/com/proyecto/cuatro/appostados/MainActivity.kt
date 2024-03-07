@@ -27,13 +27,11 @@ class MainActivity : AppCompatActivity() {
             val user = loginService.getUserSistema()
             when (user?.name) {
                 "Kevin" -> startActivity(Intent(this, HomeAdmin::class.java))
-                else -> startActivity(Intent(this, LoginActivity::class.java))
+                else -> startActivity(Intent(this, HomeAdmin::class.java))
             }
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }
-
-
 
         finish()
 

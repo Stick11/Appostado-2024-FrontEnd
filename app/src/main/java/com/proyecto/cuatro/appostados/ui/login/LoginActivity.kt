@@ -19,6 +19,9 @@ import android.content.SharedPreferences
 import com.proyecto.cuatro.appostados.MainActivity
 import com.proyecto.cuatro.appostados.R
 import com.proyecto.cuatro.appostados.RegisterActivity
+import com.proyecto.cuatro.appostados.data.repository.UserRepository
+import com.proyecto.cuatro.appostados.data.services.LoginService
+import com.proyecto.cuatro.appostados.data.services.MasterService
 
 class LoginActivity : AppCompatActivity() {
 
@@ -38,7 +41,11 @@ class LoginActivity : AppCompatActivity() {
         val login = binding.login
         val loading = binding.loading
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(this.applicationContext))
+        val masterService = MasterService()
+        val loginService = LoginService(masterService, sharedPreferences)
+        val userRepository = UserRepository(this.applicationContext)
+
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(userRepository, loginService))
             .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
